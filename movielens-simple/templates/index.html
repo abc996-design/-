@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8"/>
+  <title>MovieLens 电影介绍</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    :root{--theme:#ff6700;}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f5f5f5;}
+    header{background:var(--theme);color:#fff;padding:20px 0;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.1);}
+    .container{max-width:800px;margin:30px auto;padding:0 15px;}
+    .search-line{display:flex;gap:10px;margin-bottom:30px;}
+    .search-line input{flex:1;padding:10px 15px;font-size:16px;border:1px solid #ccc;border-radius:4px;}
+    .search-line button{padding:10px 24px;font-size:16px;border:none;border-radius:4px;background:var(--theme);color:#fff;cursor:pointer;}
+    .movie-card{background:#fff;border-radius:6px;padding:20px;margin-bottom:15px;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+    .movie-title{font-size:20px;font-weight:700;color:var(--theme);}
+    .movie-score{font-size:18px;color:#333;margin:6px 0;}
+    .movie-intro{color:#555;line-height:1.6;margin-top:8px;}
+    .no-data{text-align:center;color:#999;padding:40px 0;}
+  </style>
+</head>
+<body>
+  <header><h1>🎬 热门电影介绍</h1></header>
+  <div class="container">
+    <div class="search-line">
+      <input id="q" type="text" placeholder="输入电影英文名">
+      <button onclick="search()">搜索</button>
+    </div>
+    <div id="results"></div>
+  </div>
+
+  <script>
+   
+    const introMap = {
+      'Toy Story': '皮克斯首部电脑动画，玩具们会说话的奇妙冒险。',
+      'Jumanji': '棋盘游戏一旦开始，现实与奇幻便交织在一起。',
+      'Grumpier Old Men': '两位老顽童的爆笑晚年爱情故事。',
+      'Waiting to Exhale': '四位黑人女性携手面对感情风浪。',
+      'Father of the Bride Part II': '岳父大人同时迎来新生儿与孙子。',
+      'Heat': '阿尔·帕西诺与德尼罗的经典警匪对决。',
+      'Sabrina': '经典爱情童话的现代翻拍。',
+      'Tom and Huck': '汤姆·索亚与哈克的童年探险。',
+      'Sudden Death': '消防员单枪匹马拯救冰球场人质。',
+      'GoldenEye': '皮尔斯·布鲁斯南首演007，重启系列。',
+      'The American President': '白宫里的浪漫爱情与政治博弈。',
+      'Dracula: Dead and Loving It': '恶搞版德古拉，笑点密集。',
+      'Balto': '半狼半狗的英雄雪橇犬真实改编。',
+      'Nixon': '奥斯卡级传记片，透视水门事件。',
+      'Cutthroat Island': '海盗夺宝传奇，海战火爆。',
+      'Casino': '马丁·斯科塞斯执导，拉斯维加斯黑帮兴衰。',
+      'Sense and Sensibility': '李安执导，简·奥斯汀经典改编。',
+      'Four Rooms': '四个荒诞故事拼成的酒店一夜。',
+      'Ace Ventura: When Nature Calls': '金·凯瑞爆笑动物侦探再出击。',
+      'Money Train': '兄弟搭档抢地铁运钞车动作大片。'
+    };
+
+    async function loadMovies(kw = '') {
+      const res = await fetch(`/api/movies?kw=${encodeURIComponent(kw)}`);
+      const data = await res.json();
+      const box = document.getElementById('results');
+      if (!data.movies.length) {
+        box.innerHTML = '<div class="no-data">暂无相关电影</div>';
+        return;
+      }
+      box.innerHTML = data.movies.map(m => `
+        <div class="movie-card">
+          <div class="movie-title">${m.title}</div>
+          <div class="movie-score">平均分：${m.score} 分</div>
+          <div class="movie-intro">${introMap[m.title] || '暂无简介，欢迎补充。'}</div>
+        </div>`).join('');
+    }
+
+    function search() {
+      loadMovies(document.getElementById('q').value.trim());
+    }
+    document.getElementById('q').addEventListener('keydown', e => {
+      if (e.key === 'Enter') search();
+    });
+    // 首页自动加载
+    loadMovies();
+  </script>
+</body>
+</html>
