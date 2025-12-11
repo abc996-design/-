@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>布局示例</title>
+<!--    <link rel="stylesheet" href="styles.css">-->
+    <style>
+        /* 基本样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header input {
+            padding: 5px;
+            width: 200px;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        nav {
+            background-color: #f4f4f4;
+            width: 200px;
+            padding: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav li {
+            margin-bottom: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        section {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        section h2 {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 顶部标题和搜索框 -->
+    <header>
+        <h1>标题</h1>
+        <input type="text" placeholder="搜索...">
+    </header>
+
+    <!-- 主要内容区域 -->
+    <div class="main-content">
+        <!-- 左侧导航栏 -->
+        <nav>
+            <ul>
+                <li><a href="#">导航项1</a></li>
+                <li><a href="#">导航项2</a></li>
+                <li><a href="#">导航项3</a></li>
+                <li><a href="#">导航项4</a></li>
+            </ul>
+        </nav>
+
+        <!-- 右侧数据或报表显示区 -->
+        <section>
+            <h2>数据或报表显示区</h2>
+            <p>这里是数据或报表的内容。</p>
+        </section>
+    </div>
+</div>
+</body>
+</html>
