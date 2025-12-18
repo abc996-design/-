@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fd249fca-cea5-469d-9f0d-6eb7eb32599e" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="$PROJECT_DIR$/../../software/maven-3.9.4" />
+        <option name="localRepository" value="D:\repository" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+        <option name="useMavenConfig" value="false" />
+        <option name="userSettingsFile" value="D:\software\maven-3.9.4\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="vmOptionsForImporter" value="-Xms2g -Xmx2g" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2hPg5GnRiBvTPiAa0L4uxfaC0lX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/workspace/movie-data-test&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.31149426&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;http.proxy&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.HotMovieRealtimeAnalysis.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.MovieRatingAnalysis.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.MovieRatingWriteKafka.executor&quot;: &quot;Run&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\workspace\spark-pro\data" />
+      <recent name="E:\workspace\spark-movie\src\main\java\udaf" />
+      <recent name="E:\workspace\spark-movie\src\main\scala\org\spark\action" />
+      <recent name="E:\workspace\spark-movie\src\main\resources" />
+      <recent name="E:\workspace\spark-movie\src\main\java\phoenix\test" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.spark.customer.churn" />
+      <recent name="test1" />
+      <recent name="org.spark.action" />
+      <recent name="udaf" />
+      <recent name="phonenix.student" />
+    </key>
+  </component>
+  <component name="RunManager" selected="应用程序.HotMovieRealtimeAnalysis">
+    <configuration name="HotMovieRealtimeAnalysis" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+      <option name="MAIN_CLASS_NAME" value="movielens.HotMovieRealtimeAnalysis" />
+      <module name="movie-data-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="movielens.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JiaotongJuli" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.spark.music.JiaotongJuli" />
+      <module name="movie-data-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.spark.music.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MapDistince" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.spark.music.MapDistince" />
+      <module name="movie-data-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.spark.music.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MovieRatingAnalysis" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
+      <option name="MAIN_CLASS_NAME" value="movielens.MovieRatingAnalysis" />
+      <module name="movie-data-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="movielens.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MovieRatingWriteKafka" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="movielens.MovieRatingWriteKafka" />
+      <module name="movie-data-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="movielens.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="应用程序.HotMovieRealtimeAnalysis" />
+      <item itemvalue="应用程序.JiaotongJuli" />
+      <item itemvalue="应用程序.MapDistince" />
+      <item itemvalue="应用程序.MovieRatingAnalysis" />
+      <item itemvalue="应用程序.MovieRatingWriteKafka" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="应用程序.HotMovieRealtimeAnalysis" />
+        <item itemvalue="应用程序.MovieRatingWriteKafka" />
+        <item itemvalue="应用程序.MovieRatingAnalysis" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd249fca-cea5-469d-9f0d-6eb7eb32599e" name="Changes" comment="" />
+      <created>1717500942741</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717500942741</updated>
+      <workItem from="1717500943803" duration="6007000" />
+      <workItem from="1717507081576" duration="59109000" />
+      <workItem from="1717742321753" duration="4018000" />
+      <workItem from="1717989646022" duration="10235000" />
+      <workItem from="1718027080454" duration="6806000" />
+      <workItem from="1718110200028" duration="28336000" />
+      <workItem from="1718273111103" duration="25445000" />
+      <workItem from="1718424473575" duration="6449000" />
+      <workItem from="1719116788637" duration="6686000" />
+      <workItem from="1719151897415" duration="3000" />
+      <workItem from="1719151957184" duration="3487000" />
+      <workItem from="1719297884518" duration="2033000" />
+      <workItem from="1719461512403" duration="961000" />
+      <workItem from="1719474134755" duration="26671000" />
+      <workItem from="1719546244271" duration="5415000" />
+      <workItem from="1719722204230" duration="705000" />
+      <workItem from="1719726485385" duration="407000" />
+      <workItem from="1719905699310" duration="838000" />
+      <workItem from="1719906658627" duration="1813000" />
+      <workItem from="1720158605205" duration="11000" />
+      <workItem from="1721143915029" duration="27355000" />
+      <workItem from="1723974723950" duration="199000" />
+      <workItem from="1727074813343" duration="206000" />
+      <workItem from="1727966446591" duration="479000" />
+      <workItem from="1727967005803" duration="251000" />
+      <workItem from="1728347857792" duration="10000" />
+      <workItem from="1728452486075" duration="3009000" />
+      <workItem from="1728458151738" duration="700000" />
+      <workItem from="1728459016133" duration="678000" />
+      <workItem from="1728460481925" duration="106000" />
+      <workItem from="1728871229888" duration="294000" />
+      <workItem from="1729108376321" duration="296000" />
+      <workItem from="1729601406498" duration="1083000" />
+      <workItem from="1729603535438" duration="48000" />
+      <workItem from="1730540009171" duration="644000" />
+      <workItem from="1730551204017" duration="23000" />
+      <workItem from="1730552729221" duration="607000" />
+      <workItem from="1732690005413" duration="707000" />
+      <workItem from="1734501388661" duration="1530000" />
+      <workItem from="1734504346077" duration="3602000" />
+      <workItem from="1736059689671" duration="1390000" />
+      <workItem from="1736071148945" duration="2019000" />
+      <workItem from="1740383960434" duration="711000" />
+      <workItem from="1747806637751" duration="3163000" />
+      <workItem from="1752248468333" duration="61000" />
+      <workItem from="1757735078747" duration="735000" />
+      <workItem from="1757853107060" duration="245000" />
+      <workItem from="1763693151293" duration="4360000" />
+      <workItem from="1763723521804" duration="33000" />
+      <workItem from="1765073746049" duration="429000" />
+      <workItem from="1765074213899" duration="3374000" />
+      <workItem from="1765078667403" duration="7282000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
