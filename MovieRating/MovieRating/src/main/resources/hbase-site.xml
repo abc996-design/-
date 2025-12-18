@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <!-- HBase ZooKeeper 配置 -->
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>192.168.10.100,192.168.10.101,192.168.10.102</value>
+    </property>
+    
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>2181</value>
+    </property>
+    
+    <!-- HBase 主节点端口 -->
+    <property>
+        <name>hbase.master</name>
+        <value>192.168.10.100:16000</value>
+    </property>
+</configuration>
+

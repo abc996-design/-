@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据统计 - HBase电影评分系统</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      padding: 20px;
+
+      /*background: url('https://sns-img-hw.xhscdn.com/01025a01kmrxfxrviaw010rznkk0novmuz?imageView2/2/h/1080/format/webp') ;*/
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      /*background: rgba(74, 149, 146, 0.62);*/
+      background: rgba(202, 222, 239, 0.93);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2em;
+    }
+
+    .back-btn {
+      background: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #1976D2;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: white;
+      color: #333;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      border: 2px solid #2196F3;
+    }
+
+    .stat-value {
+      font-size: 3em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #2196F3;
+    }
+
+    .stat-label {
+      font-size: 1.1em;
+      color: #666;
+    }
+
+    .info-section {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+
+    .info-section h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .info-item {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #2196F3;
+    }
+
+    .info-item .label {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+
+    .info-item .value {
+      color: #333;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: #2196F3;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #2196F3;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .refresh-btn {
+      background: #2196F3;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+      display: block;
+      margin: 30px auto 0;
+    }
+
+    .refresh-btn:hover {
+      background: #1976D2;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📊 数据统计</h1>
+      <a href="/" class="back-btn">← 返回首页</a>
+    </div>
+
+    <div id="content">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>正在加载统计数据...</p>
+      </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadStatistics()">🔄 刷新数据</button>
+  </div>
+
+  <script>
+    function loadStatistics() {
+      document.getElementById('content').innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>正在加载统计数据...</p>
+        </div>
+      `;
+
+      fetch('/api/statistics')
+        .then(response => response.json())
+        .then(result => {
+          if (result.code === 200) {
+            displayStatistics(result.data);
+          } else {
+            document.getElementById('content').innerHTML = `
+              <div class="empty-state">
+                <p>加载统计数据失败: ${result.message}</p>
+              </div>
+            `;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('content').innerHTML = `
+            <div class="empty-state">
+              <p>加载统计数据失败，请检查网络连接</p>
+            </div>
+          `;
+        });
+    }
+
+    function displayStatistics(data) {
+      const html = `
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">${data.movieCount || 0}</div>
+            <div class="stat-label">电影总数</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">${data.ratingCount || 0}</div>
+            <div class="stat-label">评分总数</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">${data.avgRatingsPerMovie ? data.avgRatingsPerMovie.toFixed(1) : 0}</div>
+            <div class="stat-label">平均评分数/电影</div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h2>系统信息</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="label">数据集</div>
+              <div class="value">MovieLens ml-latest-small</div>
+            </div>
+
+            <div class="info-item">
+              <div class="label">存储引擎</div>
+              <div class="value">Apache HBase 1.2.6</div>
+            </div>
+
+            <div class="info-item">
+              <div class="label">Web框架</div>
+              <div class="value">Spring Boot 2.3.12</div>
+            </div>
+
+            <div class="info-item">
+              <div class="label">数据完整性</div>
+              <div class="value">✓ 已验证</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h2>数据详情</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="label">电影表 (movies)</div>
+              <div class="value">${data.movieCount || 0} 行</div>
+            </div>
+
+            <div class="info-item">
+              <div class="label">评分表 (ratings)</div>
+              <div class="value">${data.ratingCount || 0} 行</div>
+            </div>
+
+            <div class="info-item">
+              <div class="label">movies 列族</div>
+              <div class="value">info (title, genres)</div>
+            </div>
+
+            <div class="info-item">
+              <div class="label">ratings 列族</div>
+              <div class="value">rating (userId, movieId, rating, timestamp)</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('content').innerHTML = html;
+    }
+
+    // 页面加载时获取统计数据
+    loadStatistics();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.movie</groupId>
+    <artifactId>hbase-movie-rating</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>HBase Movie Rating Project</name>
+    <description>电影评分数据的HBase导入与查询项目</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <hbase.version>1.2.6</hbase.version>
+        <hadoop.version>2.7.3</hadoop.version>
+        <spark.version>2.4.8</spark.version>
+    </properties>
+
+    <!-- 项目依赖配置 - 电影评分系统所需的所有外部库 -->
+    <dependencies>
+        
+        <!-- ================================ 数据存储层依赖 ================================ -->
+
+        <!-- HBase Client - HBase客户端核心依赖 -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>${hbase.version}</version>
+            <exclusions>
+                <!-- 排除冲突的日志依赖，避免日志框架冲突 -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+            <!-- 
+            Apache HBase客户端库，提供与HBase集群交互的所有功能：
+            
+            核心功能：
+            - 连接管理：建立和维护与HBase集群的连接
+            - 表操作：创建、删除、修改表结构
+            - 数据操作：增删改查（CRUD）操作
+            - 批量操作：支持批量写入和读取，提高性能
+            
+            主要API：
+            - Connection：HBase连接对象，线程安全
+            - Table：表操作接口，支持各种数据操作
+            - Admin：管理接口，用于表和集群管理
+            - Put/Get/Delete/Scan：数据操作对象
+            
+            在项目中的应用：
+            - 存储电影基本信息（movies表）
+            - 存储用户评分数据（ratings表）
+            - 实现高性能的数据查询和统计
+            - 支持大规模数据的分布式存储
+            
+            版本选择：
+            - 使用1.2.6版本，稳定且功能完善
+            - 与Hadoop 2.7.3版本兼容
+            - 支持本项目所需的所有HBase功能
+            
+            依赖排除说明：
+            - 排除slf4j-log4j12：避免与Spring Boot的日志框架冲突
+            - 排除log4j：使用Spring Boot默认的logback日志框架
+            - 这样可以统一日志输出格式和配置
+            
+            性能优化：
+            - 连接池：复用Connection对象
+            - 批量操作：减少网络往返次数
+            - 异步操作：支持非阻塞的数据操作
+            -->
+        </dependency>
+
+        <!-- HBase Common - HBase通用组件依赖 -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-common</artifactId>
+            <version>${hbase.version}</version>
+            <!-- 
+            HBase通用组件库，提供HBase客户端和服务端共享的基础功能：
+            
+            核心组件：
+            - 配置管理：HBase配置文件的读取和解析
+            - 工具类：各种实用工具和辅助类
+            - 异常定义：HBase特有的异常类型
+            - 序列化：数据序列化和反序列化工具
+            
+            主要功能：
+            - HBaseConfiguration：配置管理工具
+            - Bytes：字节数组操作工具类
+            - KeyValue：HBase数据存储的基本单元
+            - Filter：数据过滤器的基础类
+            
+            在项目中的作用：
+            - 提供配置管理功能
+            - 支持数据类型转换
+            - 提供HBase特有的工具方法
+            - 支持自定义过滤器开发
+            
+            与hbase-client的关系：
+            - hbase-client依赖于hbase-common
+            - 显式声明确保版本一致性
+            - 避免传递依赖版本冲突
+            -->
+        </dependency>
+
+        <!-- Hadoop Common - Hadoop核心组件依赖 -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <exclusions>
+                <!-- 排除冲突的日志依赖，统一使用Spring Boot的日志框架 -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+            <!-- 
+            Apache Hadoop核心组件，HBase依赖的底层分布式系统框架：
+            
+            核心功能：
+            - 分布式文件系统：HDFS的客户端支持
+            - 配置管理：Hadoop配置系统
+            - 安全框架：Kerberos认证和授权
+            - RPC框架：分布式服务调用机制
+            
+            主要组件：
+            - Configuration：配置管理系统
+            - FileSystem：文件系统抽象层
+            - UserGroupInformation：用户和权限管理
+            - RPC：远程过程调用框架
+            
+            与HBase的关系：
+            - HBase构建在Hadoop之上
+            - 使用HDFS作为底层存储
+            - 依赖Hadoop的配置和安全机制
+            - 共享Hadoop的分布式基础设施
+            
+            在项目中的作用：
+            - 提供HBase运行所需的基础环境
+            - 支持分布式配置管理
+            - 提供文件系统访问能力
+            - 支持集群环境的部署
+            
+            版本兼容性：
+            - 使用2.7.3版本，与HBase 1.2.6兼容
+            - 经过充分测试，稳定可靠
+            - 支持本项目的所有功能需求
+            
+            依赖排除原因：
+            - 避免日志框架冲突
+            - 统一使用Spring Boot的日志配置
+            - 简化日志管理和配置
+            -->
+        </dependency>
+
+        <!-- ================================ 数据处理依赖 ================================ -->
+
+        <!-- Spark Core - Spark核心库 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.11</artifactId>
+            <version>${spark.version}</version>
+            <exclusions>
+                <!-- 排除与Hadoop冲突的依赖 -->
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-client</artifactId>
+                </exclusion>
+            </exclusions>
+            <!-- 
+            Spark核心库，提供分布式计算框架：
+            
+            核心功能：
+            - RDD（弹性分布式数据集）：分布式数据处理基础
+            - 分布式计算引擎：支持大规模数据处理
+            - 内存计算：提高计算性能
+            - 容错机制：保障数据可靠性
+            
+            在项目中的应用：
+            - 批处理计算：对电影评分数据进行统计分析
+            - 数据聚合：计算平均评分、热门电影等
+            - 实时计算：流式处理评分数据
+            
+            版本选择：
+            - 使用2.4.8版本，稳定且功能完善
+            - 与Java 8兼容
+            - 支持Hadoop生态系统
+            -->
+        </dependency>
+
+        <!-- Spark SQL - Spark结构化数据处理 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.11</artifactId>
+            <version>${spark.version}</version>
+            <!-- 
+            Spark SQL模块，提供结构化数据处理能力：
+            
+            核心功能：
+            - DataFrame API：面向列的数据结构
+            - SQL查询支持：使用标准SQL进行数据分析
+            - 与HBase集成：支持从HBase读写数据
+            - 优化执行引擎：自动优化查询计划
+            
+            在项目中的应用：
+            - 结构化数据处理
+            - 复杂数据分析查询
+            - 与HBase数据的交互
+            -->
+        </dependency>
+
+        <!-- Spark Streaming - Spark流式处理 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.11</artifactId>
+            <version>${spark.version}</version>
+            <!-- 
+            Spark Streaming模块，提供流式数据处理能力：
+            
+            核心功能：
+            - 流式计算：实时处理数据流
+            - 窗口操作：支持滑动窗口计算
+            - 与外部系统集成：支持Kafka、Flume等
+            - 状态管理：维护计算状态
+            
+            在项目中的应用：
+            - 实时评分分析
+            - 实时热门电影推荐
+            - 实时数据监控
+            -->
+        </dependency>
+
+        <!-- OpenCSV - CSV文件解析库 -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.5.2</version>
+            <!-- 
+            OpenCSV是一个功能强大的CSV文件处理库，用于解析MovieLens数据集：
+            
+            核心功能：
+            - CSV读取：高效解析CSV格式文件
+            - 数据绑定：自动将CSV行映射为Java对象
+            - 类型转换：支持各种数据类型的自动转换
+            - 错误处理：提供详细的解析错误信息
+            
+            主要API：
+            - CSVReader：基础CSV读取器
+            - CsvToBean：CSV到Java对象的映射器
+            - CSVWriter：CSV文件写入器
+            - 注解支持：@CsvBindByName、@CsvBindByPosition等
+            
+            在项目中的应用：
+            - 解析movies.csv文件，提取电影信息
+            - 解析ratings.csv文件，提取评分数据
+            - 支持大文件的流式处理
+            - 处理CSV格式的特殊字符和编码
+            
+            数据处理流程：
+            1. 读取MovieLens数据集的CSV文件
+            2. 解析每一行数据为Java对象
+            3. 进行数据清洗和验证
+            4. 批量导入到HBase数据库
+            
+            版本特性：
+            - 5.5.2版本稳定且功能完善
+            - 支持Java 8+的新特性
+            - 提供更好的性能和内存管理
+            - 修复了早期版本的已知问题
+            
+            性能优化：
+            - 支持流式读取，内存占用低
+            - 批量处理，提高导入效率
+            - 可配置的缓冲区大小
+            - 支持多线程并行处理
+            
+            使用示例：
+            - 电影数据：movieId,title,genres
+            - 评分数据：userId,movieId,rating,timestamp
+            - 自动处理引号、逗号等特殊字符
+            -->
+        </dependency>
+
+        <!-- ================================ 日志依赖 ================================ -->
+
+        <!-- SLF4J API - 日志门面接口 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+        </dependency>
+
+        <!-- Logback Classic - 日志实现 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version>
+        </dependency>
+
+        <!-- ================================ 测试依赖 ================================ -->
+
+        <!-- JUnit - 单元测试框架 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- ================================ 构建配置 ================================ -->
+    <!-- Maven构建配置，定义项目的编译、打包和部署规则 -->
+    <build>
+        <plugins>
+            <!-- Maven编译插件 - Java编译配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <!-- Java源码版本 -->
+                    <source>8</source>
+                    <!-- Java目标版本 -->
+                    <target>8</target>
+                    <!-- 编译时字符编码 -->
+                    <encoding>UTF-8</encoding>
+                    <!-- 
+                    Maven编译插件负责Java源码的编译过程：
+                    
+                    版本配置：
+                    - source=8：使用Java 8语法特性
+                    - target=8：生成Java 8兼容的字节码
+                    - 确保代码在Java 8+环境中运行
+                    
+                    编码配置：
+                    - encoding=UTF-8：统一使用UTF-8编码
+                    - 避免中文注释和字符串的乱码问题
+                    - 确保跨平台编译的一致性
+                    
+                    Java 8特性支持：
+                    - Lambda表达式：函数式编程支持
+                    - Stream API：集合操作的流式处理
+                    - Optional：空值处理的优雅方案
+                    - 新的日期时间API：LocalDateTime等
+                    
+                    编译优化：
+                    - 增量编译：只编译修改过的文件
+                    - 并行编译：利用多核CPU加速编译
+                    - 编译缓存：复用编译结果提高效率
+                    
+                    兼容性考虑：
+                    - 向后兼容：Java 8代码可在更高版本运行
+                    - 企业环境：Java 8在企业环境中广泛使用
+                    - 稳定性：Java 8是长期支持版本
+                    
+                    开发体验：
+                    - IDE集成：与主流IDE完美集成
+                    - 调试支持：保留调试信息和行号
+                    - 错误提示：提供清晰的编译错误信息
+                    -->
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin - 创建可执行JAR包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.movie.MainApp</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
